@@ -30,7 +30,7 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(255,
 .logo-wrap:hover .logo-icon{transform:rotate(-8deg) scale(1.06)}
 .logo-text{font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--dark)}
 .logo-text span{color:var(--red)}
-.nav-tabs{display:flex;gap:3px}
+.nav-tabs{display:none}
 .nav-tab{background:none;border:none;padding:8px 16px;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s;white-space:nowrap}
 .nav-tab:hover{background:#f0f0f0;color:var(--dark)}.nav-tab.active{background:var(--dark);color:#fff}
 .search-wrap{flex:1;max-width:440px;background:#f0f0f0;border-radius:28px;display:flex;align-items:center;padding:0 14px;gap:8px;transition:box-shadow .2s}
@@ -55,7 +55,7 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(255,
 .ad-banner-top{margin:calc(var(--nav-h) + 54px) 18px 0;height:72px;background:linear-gradient(135deg,#f8f9fa,#f0f0f0);border:2px dashed #ddd;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;color:#bbb;font-size:11px;font-weight:600}
 
 /* MASONRY GRID */
-.pins-container{padding:8px 14px 100px}
+.pins-container{padding:8px 14px 120px}
 .masonry-grid{columns:5;column-gap:13px}
 @media(max-width:1400px){.masonry-grid{columns:4}}
 @media(max-width:1100px){.masonry-grid{columns:3}}
@@ -244,10 +244,55 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(255,
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* MOBILE BOTTOM NAV */
-.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:4px 0 calc(4px + env(safe-area-inset-bottom,0px))}
-.bn-inner{display:flex;justify-content:space-around;align-items:center}
-.bn-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:7px 11px;color:var(--muted);transition:color .2s;min-width:54px}
-.bn-btn.active{color:var(--red)}.bn-ic{font-size:21px;line-height:1}.bn-lbl{font-size:10px;font-weight:600}
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  padding:0 0 calc(env(safe-area-inset-bottom,0px));
+  box-shadow:0 -1px 0 rgba(0,0,0,.06),0 -8px 32px rgba(0,0,0,.08);
+}
+/* Colored accent line on top of bottom nav */
+.bottom-nav::before{
+  content:'';display:block;height:3px;
+  background:linear-gradient(90deg,#E60023 0%,#ff6b6b 30%,#a855f7 60%,#3b82f6 100%);
+}
+.bn-inner{
+  display:flex;justify-content:space-around;align-items:flex-end;
+  max-width:680px;margin:0 auto;padding:6px 4px 8px;
+}
+.bn-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:4px 2px;
+  color:#9e9e9e;transition:all .22s cubic-bezier(.34,1.56,.64,1);
+  font-family:var(--font-body);position:relative;min-width:0;
+}
+.bn-btn:active{transform:scale(.88)}
+.bn-ic{
+  font-size:22px;line-height:1;transition:transform .22s cubic-bezier(.34,1.56,.64,1);
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:12px;
+}
+.bn-btn.active .bn-ic{transform:translateY(-3px) scale(1.1)}
+.bn-btn.active{color:var(--red)}
+.bn-lbl{font-size:10px;font-weight:700;letter-spacing:.3px;transition:all .2s}
+/* Upload center button — special FAB style */
+.bn-upload-center .bn-ic{
+  background:linear-gradient(135deg,#E60023,#ff4d6d);
+  color:#fff;font-size:24px;width:48px;height:48px;
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(230,0,35,.45);
+  transform:translateY(-8px);
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);
+}
+.bn-upload-center:active .bn-ic{transform:translateY(-6px) scale(.92)}
+.bn-upload-center .bn-lbl{margin-top:-2px}
+/* Active indicator dot */
+.bn-btn.active::after{
+  content:'';position:absolute;bottom:-2px;
+  width:4px;height:4px;border-radius:50%;background:var(--red);
+}
+.bn-upload-center.active::after{display:none}
 
 /* PAGE OVERLAYS */
 .page-overlay{display:none;position:fixed;inset:0;z-index:350;background:#fff;overflow-y:auto;padding-top:var(--nav-h)}.page-overlay.open{display:block}
@@ -294,7 +339,7 @@ footer{background:var(--slate);color:#ccc;padding:36px 20px 22px}
 #adminPanel{display:none;background:#0f0f14;min-height:100vh;flex-direction:row}
 #adminPanel.open{display:flex}
 .admin-sidebar{width:240px;background:#16161e;border-right:1px solid #2a2a38;height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
-.asb-top{padding:16px 18px;border-bottom:1px solid #2a2a38;display:flex;align-items:center;gap:9px;cursor:pointer}
+.asb-top{padding:0;border-bottom:none;display:flex;align-items:flex-start;gap:9px;cursor:pointer}
 .asb-logo{width:33px;height:33px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .asb-name{font-family:var(--font-display);font-size:15px;font-weight:900;color:#f0f0f5}.asb-name span{color:var(--red)}
 .asb-tag{font-size:9px;font-weight:700;background:var(--red);color:#fff;padding:2px 5px;border-radius:5px}
@@ -360,10 +405,8 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  .bottom-nav{display:block}
-  .nav-tabs{display:none}
   .search-wrap{max-width:none;flex:1}
-  .pins-container{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  .pins-container{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
   .fab{bottom:calc(78px + env(safe-area-inset-bottom,0px));right:16px}
   .toast{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
   .admin-sidebar{display:none}
@@ -391,10 +434,9 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     </div>
     <div class="nav-right">
       <button class="install-btn" id="installBtn" onclick="triggerInstall()">📲 Install App</button>
-      <button class="nav-btn" onclick="openFeedback()" title="Feedback">💬</button>
-      <button class="nav-btn" onclick="toast('🔔 Koi notification nahi')">🔔</button>
-      <button class="admin-link" onclick="showView('adminLogin')">⚙️ Admin</button>
-      <div class="avatar-btn">A</div>
+      <button class="nav-btn" onclick="toast('🔔 Koi notification nahi')" title="Notifications">🔔</button>
+      <button id="navLoginBtn" onclick="openAuthModal('login')" style="background:var(--red);color:#fff;padding:8px 18px;border-radius:22px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#ad081b'" onmouseout="this.style.background='var(--red)'">🔑 Login</button>
+      <div class="avatar-btn" id="userAvatarBtn" style="display:none" onclick="toggleUserMenu()">A</div>
     </div>
   </nav>
 
@@ -403,13 +445,23 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
   <div class="pins-container"><div class="masonry-grid" id="grid"></div></div>
 
   <!-- MOBILE BOTTOM NAV -->
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" id="bottomNav">
     <div class="bn-inner">
-      <button class="bn-btn active" id="bn-home"    onclick="setTab('home',document.getElementById('tabHome'));setBn('home')"><span class="bn-ic">🏠</span><span class="bn-lbl">Home</span></button>
-      <button class="bn-btn"        id="bn-explore" onclick="setTab('explore',document.getElementById('tabExplore'));setBn('explore')"><span class="bn-ic">✨</span><span class="bn-lbl">Explore</span></button>
-      <button class="bn-btn"        id="bn-reels"   onclick="openReels()"><span class="bn-ic">🎬</span><span class="bn-lbl">Reels</span></button>
-      <button class="bn-btn"        id="bn-upload"  onclick="openUpload()"><span class="bn-ic">➕</span><span class="bn-lbl">Upload</span></button>
-      <button class="bn-btn"        id="bn-fb"      onclick="openFeedback()"><span class="bn-ic">💬</span><span class="bn-lbl">Feedback</span></button>
+      <button class="bn-btn active" id="bn-home" onclick="setTab('home',document.getElementById('tabHome'));setBn('home')">
+        <span class="bn-ic">🏠</span><span class="bn-lbl">Home</span>
+      </button>
+      <button class="bn-btn" id="bn-explore" onclick="setTab('explore',document.getElementById('tabExplore'));setBn('explore')">
+        <span class="bn-ic">✨</span><span class="bn-lbl">Explore</span>
+      </button>
+      <button class="bn-btn bn-upload-center" id="bn-upload" onclick="openUpload()">
+        <span class="bn-ic">＋</span><span class="bn-lbl">Upload</span>
+      </button>
+      <button class="bn-btn" id="bn-reels" onclick="openReels();setBn('reels')">
+        <span class="bn-ic">🎬</span><span class="bn-lbl">Reels</span>
+      </button>
+      <button class="bn-btn" id="bn-fb" onclick="openFeedback()">
+        <span class="bn-ic">💬</span><span class="bn-lbl">Feedback</span>
+      </button>
     </div>
   </nav>
 
@@ -464,7 +516,7 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     <p><strong>PinBoard</strong> India ka desi platform hai — Pinterest aur Instagram Reels ka best combination!</p>
     <h2>🌟 Features</h2>
     <ul><li>📌 Masonry grid — Pinterest style pins</li><li>🎬 Reels — 9:16 vertical video format</li><li>🎥 Videos — Hover pe autoplay</li><li>📤 Multi-platform sharing</li><li>💬 Feedback system</li><li>📲 App Install (PWA)</li><li>📱 Mobile + Laptop dono</li></ul>
-    <p>Contact: <a href="mailto:hello@pinboard.in">hello@pinboard.in</a></p>
+    <p>Contact: <a href="/cdn-cgi/l/email-protection#bbd3ded7d7d4fbcbd2d5d9d4dac9df95d2d5"><span class="__cf_email__" data-cfemail="b4dcd1d8d8dbf4c4dddad6dbd5c6d09addda">[email&#160;protected]</span></a></p>
   </div>
 </div>
 <div class="page-overlay" id="pgPrivacy">
@@ -474,7 +526,7 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     <p>PinBoard aapki privacy serious leta hai. Data <strong>sell nahi karte</strong>.</p>
     <h2>Data Collection</h2><ul><li>Account info</li><li>Uploaded content</li><li>Usage analytics</li></ul>
     <h2>AdSense</h2><p>Hum Google AdSense use karte hain. <a href="https://www.google.com/settings/ads" target="_blank">Opt-out karein</a>.</p>
-    <p>Contact: <a href="mailto:privacy@pinboard.in">privacy@pinboard.in</a></p>
+    <p>Contact: <a href="/cdn-cgi/l/email-protection#3b4b49524d5a58427b4b525559545a495f155255"><span class="__cf_email__" data-cfemail="b2c2c0dbc4d3d1cbf2c2dbdcd0ddd3c0d69cdbdc">[email&#160;protected]</span></a></p>
   </div>
 </div>
 <div class="page-overlay" id="pgTerms">
@@ -482,7 +534,7 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     <button class="pg-back-btn" onclick="closePage('pgTerms')">← Wapas</button>
     <h1>Terms of Service</h1><div class="pg-sub">Last Updated: January 2025</div>
     <h2>Content Rules</h2><ul><li>Sirf apna original content upload karein</li><li>Hate speech allowed nahi</li><li>Spam allowed nahi</li></ul>
-    <p>Contact: <a href="mailto:legal@pinboard.in">legal@pinboard.in</a></p>
+    <p>Contact: <a href="/cdn-cgi/l/email-protection#dfb3bab8beb39fafb6b1bdb0beadbbf1b6b1"><span class="__cf_email__" data-cfemail="a8c4cdcfc9c4e8d8c1c6cac7c9dacc86c1c6">[email&#160;protected]</span></a></p>
   </div>
 </div>
 <div class="page-overlay" id="pgContact">
@@ -522,6 +574,55 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     </div>
     <button class="native-share-btn" onclick="nativeShare()">📲 Device Share Menu</button>
   </div>
+</div>
+
+<!-- AUTH MODAL: Login / Register -->
+<div id="authModal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="if(event.target===this)closeAuthModal()">
+  <div style="background:#fff;border-radius:22px;padding:32px 28px 24px;width:390px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.2);position:relative;animation:popIn .22s ease">
+    <button onclick="closeAuthModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#767676;line-height:1">✕</button>
+    <div style="display:flex;gap:0;margin-bottom:22px;background:#f5f5f5;border-radius:12px;padding:4px">
+      <button id="authTabLogin" onclick="switchAuthTab('login')" style="flex:1;padding:9px;border:none;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;background:var(--red);color:#fff;transition:all .2s">🔑 Login</button>
+      <button id="authTabReg" onclick="switchAuthTab('register')" style="flex:1;padding:9px;border:none;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;background:transparent;color:#767676;transition:all .2s">✨ Register</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="authLoginForm">
+      <h2 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#111">Wapas aaiye! 👋</h2>
+      <p style="font-size:13px;color:#767676;margin:0 0 18px">Apne account mein login karein</p>
+      <input id="lgEmail" type="email" placeholder="📧 Email Address" autocomplete="email" style="width:100%;padding:12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;margin-bottom:11px;outline:none;font-family:inherit;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+      <div style="position:relative;margin-bottom:6px">
+        <input id="lgPass" type="password" placeholder="🔒 Password" autocomplete="current-password" style="width:100%;padding:12px 44px 12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+        <button type="button" onclick="tpv('lgPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0">👁</button>
+      </div>
+      <div style="text-align:right;margin-bottom:16px"><a onclick="toast('📧 Password reset link bheja jayega')" style="font-size:12px;color:var(--red);cursor:pointer;font-weight:500">Password bhool gaye?</a></div>
+      <button onclick="doUserLogin()" style="width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;font-family:inherit" onmouseover="this.style.background='#ad081b'" onmouseout="this.style.background='var(--red)'">🔑 Login Karein</button>
+      <p style="text-align:center;font-size:13px;color:#767676;margin:14px 0 0">Account nahi hai? <a onclick="switchAuthTab('register')" style="color:var(--red);font-weight:700;cursor:pointer">Register karein →</a></p>
+    </div>
+    <!-- REGISTER -->
+    <div id="authRegForm" style="display:none">
+      <h2 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#111">Join PinBoard! 🎉</h2>
+      <p style="font-size:13px;color:#767676;margin:0 0 16px">Free mein account banayein — bilkul aasaan!</p>
+      <input id="rgName" type="text" placeholder="👤 Poora Naam" autocomplete="name" style="width:100%;padding:12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;margin-bottom:11px;outline:none;font-family:inherit;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+      <input id="rgEmail" type="email" placeholder="📧 Email Address" autocomplete="email" style="width:100%;padding:12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;margin-bottom:11px;outline:none;font-family:inherit;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+      <div style="position:relative;margin-bottom:11px">
+        <input id="rgPass" type="password" placeholder="🔒 Password (min 8 characters)" autocomplete="new-password" style="width:100%;padding:12px 44px 12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+        <button type="button" onclick="tpv('rgPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0">👁</button>
+      </div>
+      <select id="rgRole" style="width:100%;padding:12px 14px;border:1.5px solid #e8e8e8;border-radius:11px;font-size:14px;margin-bottom:18px;outline:none;font-family:inherit;color:#111;background:#fff;box-sizing:border-box;transition:border .2s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='#e8e8e8'">
+        <option value="user">👤 Normal User — Browse & Save</option>
+        <option value="creator">✦ Creator — Content Upload Bhi</option>
+      </select>
+      <button onclick="doRegister()" style="width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;font-family:inherit" onmouseover="this.style.background='#ad081b'" onmouseout="this.style.background='var(--red)'">✨ Account Banayein</button>
+      <p style="text-align:center;font-size:12px;color:#767676;margin:12px 0 0">Pehle se account hai? <a onclick="switchAuthTab('login')" style="color:var(--red);font-weight:700;cursor:pointer">← Login karein</a></p>
+    </div>
+  </div>
+</div>
+<!-- USER DROPDOWN MENU -->
+<div id="userMenuDrop" style="display:none;position:fixed;top:68px;right:14px;background:#fff;border-radius:14px;padding:8px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:550;min-width:190px;animation:popIn .18s ease">
+  <div id="uMenuHeader" style="padding:8px 10px 11px;font-size:13px;font-weight:600;color:#111;border-bottom:1px solid #f0f0f0;margin-bottom:5px"></div>
+  <button onclick="closeUserMenu();openUpload()" style="display:block;width:100%;text-align:left;padding:9px 10px;border:none;background:none;cursor:pointer;font-size:13px;border-radius:9px;color:#111;font-family:inherit" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='none'">➕ Upload Pin</button>
+  <button onclick="closeUserMenu();toast('📌 '+savedSet.size+' pins saved hain')" style="display:block;width:100%;text-align:left;padding:9px 10px;border:none;background:none;cursor:pointer;font-size:13px;border-radius:9px;color:#111;font-family:inherit" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='none'">🔖 Saved Pins ('+savedSet.size+')</button>
+  <hr style="border:none;border-top:1px solid #f0f0f0;margin:5px 0">
+  <button onclick="doUserLogout()" style="display:block;width:100%;text-align:left;padding:9px 10px;border:none;background:none;cursor:pointer;font-size:13px;border-radius:9px;color:#E60023;font-weight:600;font-family:inherit" onmouseover="this.style.background='#fff0f1'" onmouseout="this.style.background='none'">🚪 Logout</button>
 </div>
 
 <!-- DETAIL MODAL -->
@@ -572,7 +673,7 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     <video id="uploadVideoPreview" class="upload-video-preview" controls></video>
     <input class="form-input" id="pinTitle" placeholder="Title likhein (zaruri)" maxlength="80">
     <textarea class="form-input" id="pinDesc" rows="2" placeholder="Description (optional)"></textarea>
-    <select class="form-input" id="pinCat"><option value="">Category chunein</option></select>
+    <select class="form-input" id="pinCat"><option value="">📂 Category chunein</option><option>Ghar</option><option>Fashion</option><option>Khana</option><option>Travel</option><option>Art</option><option>Fitness</option><option>Technology</option><option>Nature</option><option>DIY</option><option>Beauty</option><option>Weddings</option><option>Islamic</option></select>
     <button class="publish-btn" onclick="submitPin()">🚀 Publish Karo</button>
   </div>
 </div>
@@ -640,7 +741,15 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
 <!-- ═══════════════════ ADMIN PANEL ═══════════════════ -->
 <div id="adminPanel">
   <aside class="admin-sidebar">
-    <div class="asb-top" onclick="switchAP('dashboard')"><div class="asb-logo">📌</div><span class="asb-name">Pin<span>Board</span></span><span class="asb-tag">ADMIN</span></div>
+    <div class="asb-top" onclick="switchAP('dashboard')" style="flex-direction:column;gap:4px;padding:20px 16px 16px;border-bottom:1px solid #2a2a38">
+  <div style="display:flex;align-items:center;gap:10px;width:100%">
+    <div style="width:42px;height:42px;background:linear-gradient(135deg,#E60023,#ff6b6b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 6px 20px rgba(230,0,35,.45)">📌</div>
+    <div>
+      <div class="asb-name" style="font-size:16px">Pin<span>Board</span></div>
+      <div style="font-size:10px;color:#E60023;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(230,0,35,.15);padding:2px 7px;border-radius:5px;display:inline-block;margin-top:2px">ADMIN PANEL</div>
+    </div>
+  </div>
+</div>
     <div class="asl-section">Main</div>
     <div class="asl-item active" id="asi-dashboard" onclick="switchAP('dashboard')"><span class="asl-ic">📊</span>Dashboard</div>
     <div class="asl-item" id="asi-users"     onclick="switchAP('users')">    <span class="asl-ic">👥</span>Users    <span class="asl-cnt" id="cnt-u">6</span></div>
@@ -660,7 +769,7 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
     <div class="admin-content">
       <div class="ap active" id="ap-dashboard"><div class="stat-grid" id="dash-stats"></div><div class="two-col"><div class="panel"><div class="panel-title">Daily Visitors</div><div class="mini-chart" id="dash-chart"></div></div><div class="panel"><div class="panel-title">Platform Health</div><div id="dash-health"></div></div></div><div class="two-col"><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:13px;font-weight:700;color:#f0f0f5">🆕 Recent Users</span><button class="row-act" onclick="switchAP('users')">Sab →</button></div><div class="twrap"><table><thead><tr><th>User</th><th>Role</th><th>Status</th></tr></thead><tbody id="dash-users"></tbody></table></div></div><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:13px;font-weight:700;color:#f0f0f5">💬 Recent Feedback</span><button class="row-act" onclick="switchAP('feedback')">Sab →</button></div><div id="dash-fb"></div></div></div><div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:10px">⚠️ Pending Actions</div><div class="twrap"><table><thead><tr><th>Type</th><th>Item</th><th>By</th><th>Date</th><th>Action</th></tr></thead><tbody id="dash-pend"></tbody></table></div><div class="panel" style="margin-top:14px"><div class="panel-title">Recent Activity</div><div id="dash-act"></div></div></div>
       <div class="ap" id="ap-users"><div class="stat-grid" id="usr-stats"></div><div class="filter-row"><input class="f-inp" id="uq" placeholder="🔍 Search..." oninput="renderUsers()"><select class="f-sel" id="ust" onchange="renderUsers()"><option value="">Status</option><option value="active">Active</option><option value="banned">Banned</option></select><select class="f-sel" id="url" onchange="renderUsers()"><option value="">Role</option><option value="user">User</option><option value="creator">Creator</option></select><button class="a-btn primary" onclick="document.getElementById('addUserModal').classList.add('open')">+ User</button></div><div class="twrap"><table><thead><tr><th>User</th><th>Role</th><th>Pins</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usr-tb"></tbody></table></div><div class="pg-row" id="usr-pg"></div></div>
-      <div class="ap" id="ap-pins"><div class="stat-grid" id="pin-stats"></div><div class="filter-row"><input class="f-inp" id="pq" placeholder="🔍 Search..." oninput="renderPins()"><select class="f-sel" id="pcat" onchange="renderPins()"><option value="">Category</option><option>Ghar</option><option>Fashion</option><option>Khana</option><option>Travel</option><option>Art</option><option>Fitness</option><option>Technology</option><option>Nature</option><option>DIY</option></select><select class="f-sel" id="pst" onchange="renderPins()"><option value="">Status</option><option value="active">Active</option><option value="pending">Pending</option><option value="removed">Removed</option></select></div><div class="twrap"><table><thead><tr><th>Pin</th><th>Type</th><th>Creator</th><th>Saves</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pin-tb"></tbody></table></div><div class="pg-row" id="pin-pg"></div></div>
+      <div class="ap" id="ap-pins"><div class="stat-grid" id="pin-stats"></div><div class="filter-row"><input class="f-inp" id="pq" placeholder="🔍 Search..." oninput="renderPins()"><select class="f-sel" id="pcat" onchange="renderPins()"><option value="">Category</option><option>Ghar</option><option>Fashion</option><option>Khana</option><option>Travel</option><option>Art</option><option>Fitness</option><option>Technology</option><option>Nature</option><option>DIY</option><option>Islamic</option></select><select class="f-sel" id="pst" onchange="renderPins()"><option value="">Status</option><option value="active">Active</option><option value="pending">Pending</option><option value="removed">Removed</option></select></div><div class="twrap"><table><thead><tr><th>Pin</th><th>Type</th><th>Creator</th><th>Saves</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pin-tb"></tbody></table></div><div class="pg-row" id="pin-pg"></div></div>
       <div class="ap" id="ap-reels"><div class="stat-grid" id="rl-stats"></div><div class="twrap"><table><thead><tr><th>Reel</th><th>Creator</th><th>Views</th><th>Likes</th><th>Status</th><th>Actions</th></tr></thead><tbody id="rl-tb"></tbody></table></div></div>
       <div class="ap" id="ap-feedback"><div class="stat-grid" id="fb-stats"></div><div class="filter-row"><select class="f-sel" id="fbt" onchange="renderFeedbackAdmin()"><option value="">All Types</option><option value="bug">🐛 Bug</option><option value="feature">💡 Feature</option><option value="compliment">❤️ Compliment</option><option value="general">💬 General</option></select><select class="f-sel" id="fbs" onchange="renderFeedbackAdmin()"><option value="">All Stars</option><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option></select></div><div id="fb-list"></div></div>
       <div class="ap" id="ap-contacts"><div class="stat-grid" id="con-stats"></div><div class="filter-row"><input class="f-inp" id="cq" placeholder="🔍 Search..." oninput="renderContacts()"><select class="f-sel" id="cst" onchange="renderContacts()"><option value="">Status</option><option value="open">Open</option><option value="replied">Replied</option><option value="resolved">Resolved</option></select></div><div class="twrap"><table><thead><tr><th>Sender</th><th>Subject</th><th>Message</th><th>Priority</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="con-tb"></tbody></table></div></div>
@@ -673,10 +782,94 @@ tbody tr:last-child td{border-bottom:none}tbody tr:hover td{background:rgba(255,
 
 <div class="add-modal" id="addUserModal"><div class="add-box"><h3>👤 Naya User</h3><input class="m-field" id="nu-name" placeholder="Full Name"><input class="m-field" id="nu-email" type="email" placeholder="Email"><select class="m-field" id="nu-role"><option value="user">User</option><option value="creator">Creator</option></select><div class="add-actions"><button class="a-btn" onclick="document.getElementById('addUserModal').classList.remove('open')">Cancel</button><button class="a-btn primary" onclick="addUser()">Add</button></div></div></div>
 <div class="a-toast" id="aToastEl"></div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+// ─── USER AUTH SYSTEM ───
+let currentUser = null;
+function _uDB(){try{return JSON.parse(localStorage.getItem('pb_udb')||'[]');}catch{return[];}}
+function _uSave(db){localStorage.setItem('pb_udb',JSON.stringify(db));}
+
+function openAuthModal(tab){
+  document.getElementById('authModal').style.display='flex';
+  switchAuthTab(tab||'login');
+}
+function closeAuthModal(){
+  document.getElementById('authModal').style.display='none';
+  ['lgEmail','lgPass','rgName','rgEmail','rgPass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function switchAuthTab(tab){
+  const isL=tab==='login';
+  document.getElementById('authLoginForm').style.display=isL?'block':'none';
+  document.getElementById('authRegForm').style.display=isL?'none':'block';
+  const tl=document.getElementById('authTabLogin'),tr=document.getElementById('authTabReg');
+  tl.style.background=isL?'var(--red)':'transparent';tl.style.color=isL?'#fff':'#767676';
+  tr.style.background=isL?'transparent':'var(--red)';tr.style.color=isL?'#767676':'#fff';
+}
+function tpv(fid,btn){const f=document.getElementById(fid);f.type=f.type==='password'?'text':'password';btn.textContent=f.type==='password'?'👁':'🙈';}
+
+function doUserLogin(){
+  const e=document.getElementById('lgEmail').value.trim().toLowerCase();
+  const p=document.getElementById('lgPass').value;
+  if(!e||!p){toast('⚠️ Email aur password zaruri hai');return;}
+  const db=_uDB();
+  const u=db.find(x=>x.email===e&&x.pass===p);
+  if(!u){toast('❌ Email ya password galat hai');return;}
+  _setLoggedIn(u);
+}
+function doRegister(){
+  const n=document.getElementById('rgName').value.trim();
+  const e=document.getElementById('rgEmail').value.trim().toLowerCase();
+  const p=document.getElementById('rgPass').value;
+  const r=document.getElementById('rgRole').value;
+  if(!n){toast('⚠️ Naam zaruri hai');return;}
+  if(!e||!e.includes('@')){toast('⚠️ Sahi email enter karein');return;}
+  if(p.length<8){toast('⚠️ Password kam se kam 8 characters ka hona chahiye');return;}
+  const db=_uDB();
+  if(db.find(x=>x.email===e)){toast('⚠️ Ye email pehle se registered hai — Login karein');return;}
+  const nu={id:Date.now(),name:n,email:e,pass:p,role:r,
+    avatar:'https://i.pravatar.cc/60?img='+Math.floor(Math.random()*30+5),
+    joined:new Date().toISOString().split('T')[0]};
+  db.push(nu);_uSave(db);
+  _setLoggedIn(nu);
+  toast('🎉 Welcome '+n+'! Account ban gaya!');
+}
+function _setLoggedIn(u){
+  currentUser=u;
+  closeAuthModal();
+  document.getElementById('navLoginBtn').style.display='none';
+  const ab=document.getElementById('userAvatarBtn');
+  ab.style.display='flex';
+  ab.textContent=u.name.charAt(0).toUpperCase();
+  ab.title=u.name;
+  document.getElementById('uMenuHeader').innerHTML=
+    '👤 <strong>'+u.name+'</strong><br><span style="font-size:11px;color:#767676;font-weight:400">'+u.email+'</span>';
+  if(!currentUser._toasted){currentUser._toasted=1;toast('✅ Login ho gaya! Welcome, '+u.name);}
+}
+function toggleUserMenu(){
+  const m=document.getElementById('userMenuDrop');
+  m.style.display=m.style.display==='block'?'none':'block';
+}
+function closeUserMenu(){const m=document.getElementById('userMenuDrop');if(m)m.style.display='none';}
+function doUserLogout(){
+  currentUser=null;
+  document.getElementById('navLoginBtn').style.display='';
+  document.getElementById('userAvatarBtn').style.display='none';
+  closeUserMenu();
+  toast('👋 Logout ho gaya!');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#userAvatarBtn')&&!e.target.closest('#userMenuDrop'))closeUserMenu();
+});
+
+
+// ─── PAGE INIT ───
+document.addEventListener('DOMContentLoaded', function() {
+  buildCatBar();
+  applyFilters();
+});
+</script><script>
 'use strict';
 // ─── DATA ───
-const CATS=['Sab','Ghar','Fashion','Khana','Travel','Art','Fitness','Technology','Nature','DIY','Beauty','Weddings'];
+const CATS=['Sab','Ghar','Fashion','Khana','Travel','Art','Fitness','Technology','Nature','DIY','Beauty','Weddings','Islamic'];
 const USERS_D=[
   {name:'Priya Sharma',  avatar:'https://i.pravatar.cc/60?img=1', followers:'2.3k'},
   {name:'Rohan Mehra',   avatar:'https://i.pravatar.cc/60?img=3', followers:'1.1k'},
@@ -760,9 +953,10 @@ function showView(id){
   document.getElementById('adminLogin').style.display='none';
   document.getElementById('adminPanel').classList.remove('open');
   document.getElementById('reelsView').classList.remove('open');
-  if(id==='mainApp'){document.getElementById('mainApp').style.display='block';document.body.style.overflow='';}
-  else if(id==='adminLogin'){document.getElementById('adminLogin').style.display='flex';}
-  else if(id==='adminPanel'){document.getElementById('adminPanel').classList.add('open');}
+  const bn=document.getElementById('bottomNav');
+  if(id==='mainApp'){document.getElementById('mainApp').style.display='block';document.body.style.overflow='';if(bn)bn.style.display='block';}
+  else if(id==='adminLogin'){document.getElementById('adminLogin').style.display='flex';if(bn)bn.style.display='none';}
+  else if(id==='adminPanel'){document.getElementById('adminPanel').classList.add('open');if(bn)bn.style.display='none';}
 }
 function showHome(){closeAllPages();closeDetail();closeShare();}
 
@@ -855,11 +1049,12 @@ function setBn(id){document.querySelectorAll('.bn-btn').forEach(b=>b.classList.r
 function hoverPlay(id){
   const p=PIN_DATA.find(x=>x.id===id);if(!p||p.type==='image')return;
   const wrap=document.getElementById('rw'+id),vid=document.getElementById('rv'+id);
-  if(!vid||!vid.src)return;
-  vid.play().then(()=>{
-    vid.style.opacity='1';
-    wrap.classList.add('playing');
-  }).catch(()=>{});
+  if(!vid)return;
+  // Lazy-load src on first hover to avoid CORS preload issues
+  if(!vid.getAttribute('src')&&p.vid){vid.setAttribute('src',p.vid);}
+  if(!vid.getAttribute('src'))return;
+  const tryPlay=()=>{vid.play().then(()=>{vid.style.opacity='1';wrap.classList.add('playing');}).catch(()=>{});};
+  if(vid.readyState>=2){tryPlay();}else{vid.load();vid.addEventListener('canplay',tryPlay,{once:true});}
 }
 function hoverStop(id){
   const p=PIN_DATA.find(x=>x.id===id);if(!p||p.type==='image')return;
@@ -883,7 +1078,7 @@ function openDetail(id){
   } else if(isReel){
     mediaHtml=`<img src="${p.src}&auto=format&fit=crop&ar=9:16&h=600&w=338" style="width:100%;height:100%;object-fit:cover;display:block">`;
   } else {
-    mediaHtml=`<img src="${p.src}&auto=format&w=600" style="width:100%;height:100%;object-fit:contain;display:block">`;
+    mediaHtml=`<img src="${p.src}&auto=format&w=600" style="width:100%;height:100%;object-fit:contain;display:block" loading="eager" onerror="this.style.background='#f0f0f0'">`;
   }
   document.getElementById('detailMedia').innerHTML=mediaHtml;
   document.getElementById('detailTitle').textContent=p.title;
@@ -1102,17 +1297,4 @@ function changePw(){const np=document.getElementById('newPw').value,cp=document.
 // ─── KEYBOARD ───
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    if(document.getElementById('reelsView').classList.contains('open')){closeReels();return;}
-    closeDetail();closeShare();closeUpload();closeFeedback();closeAllPages();
-    document.getElementById('addUserModal').classList.remove('open');
-  }
-  if(e.key==='Enter'&&document.getElementById('adminLogin').style.display==='flex')doLogin();
-});
-
-// ─── INIT ───
-CATS.filter(c=>c!=='Sab').forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;document.getElementById('pinCat').appendChild(o);});
-buildCatBar();
-applyFilters();
-</script>
-</body>
-</html>
+    if(document.getElementById('reelsView').classList.contains('open')){closeReels(
